@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>ssm_curd</display-name>
+  
+  
+  <listener>
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>classpath:applicationContext.xml</param-value>
+  </context-param> 
+  
+  <servlet>
+  	<servlet-name>sprimgmvc.xml</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<init-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>classpath:springmvc.xml</param-value>
+  	</init-param>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>sprimgmvc.xml</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+ </servlet-mapping>
+ 
+<filter>
+ 	<filter-name>characterFilter</filter-name>
+ 	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+ 	<init-param>
+ 		<param-name>encoding</param-name>
+ 		<param-value>UTF-8</param-value>
+ 	</init-param>
+ 	<init-param>
+ 		<param-name>forceRequestEncoding</param-name>
+ 		<param-value>true</param-value>
+ 	</init-param>
+ 	<init-param>
+ 		<param-name>forceResponseEncoding</param-name>
+ 		<param-value>true</param-value>
+ 	</init-param>
+ </filter>
+ <filter-mapping>
+ 	<filter-name>characterFilter</filter-name>
+ 	<url-pattern>/*</url-pattern>
+ </filter-mapping>
+<filter>
+	<filter-name>hiddenHttpMethodFilter</filter-name>
+	<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>hiddenHttpMethodFilter</filter-name>
+	<url-pattern>/*1</url-pattern>
+</filter-mapping>
+<filter>
+	<filter-name>httpPutFormContentFilter</filter-name>
+	<filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>httpPutFormContentFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
+ 
+<!--  Spring 为此专门提供了一个 OpenSessionInViewFilter 过滤器，它的主要功能是使每个请求过程绑定一个 Hibernate Session，即使最初的事务已经完成了，也可以在 Web 层进行延迟加载的操作。  -->
+ <!-- <filter> 
+<filter-name>hibernateFilter</filter-name> 
+<filter-class> 
+org.springframework.orm.hibernate3.support.OpenSessionInViewFilter 
+</filter-class> 
+</filter> 
+<filter-mapping> 
+<filter-name>hibernateFilter</filter-name> 
+<url-pattern>*.html,*.jsp</url-pattern> 
+</filter-mapping> -->
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

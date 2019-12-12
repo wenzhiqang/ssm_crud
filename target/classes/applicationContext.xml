@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns="http://www.springframework.org/schema/beans" 
+xmlns:aop="http://www.springframework.org/schema/aop" 
+xmlns:context="http://www.springframework.org/schema/context" 
+xmlns:mvc="http://www.springframework.org/schema/mvc" 
+xmlns:tx="http://www.springframework.org/schema/tx" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd 
+			http://www.springframework.org/schema/aop 
+			http://www.springframework.org/schema/aop/spring-aop.xsd 
+			http://www.springframework.org/schema/context 
+			http://www.springframework.org/schema/context/spring-context.xsd 
+			http://www.springframework.org/schema/mvc 
+			http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+			http://www.springframework.org/schema/tx 
+			http://www.springframework.org/schema/tx/spring-tx.xsd ">
+	
+	<!-- <context:property-placeholder location="mysql.properties"/> -->
+	<!-- <context:component-scan base-package="com.nothing.curd">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan> -->
+	
+	
+	<!-- <bean name="dabaSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbcDriver}"></property>
+		<property name="jdbcUrl" value="${jdbcUrl}"></property>
+		<property name="user" value="${jdbcUser}"></property>
+		<property name="password" value="${jdbcPassword}"></property>
+	</bean> -->
+	 <bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql:///ssm_curd"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="18226139736"></property>
+	</bean>
+	
+	<bean name="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis.xml"></property>
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations" value="classpath:mappers/*"></property>
+		<!-- 注意其他配置 -->
+	  <property name="plugins">
+	    <array>
+	      <bean class="com.github.pagehelper.PageInterceptor">
+	        <property name="properties">
+	          <!--使用下面的方式配置参数，一行配置一个 -->
+		          <value>
+		            reasonable=true
+		          </value>
+	        </property>
+	      </bean>
+	    </array>
+	  </property>
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.nothing.curd.dao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	
+	<bean name="employeeService" class="com.nothing.curd.service.EmployeeServiceImpl">
+		<property name="dao" ref="IEmployeeDao"></property>
+	</bean>
+	
+	<bean name="departmentSerice" class="com.nothing.curd.service.DepartmentSericeImpl">
+		<property name="dao" ref="IDepartmentDao"></property>
+	</bean>
+	
+	<!-- <bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<aop:config>
+		<aop:pointcut expression="execution(* *..service.*.*(..))" id="aopPointcut"/>
+		<aop:advisor advice-ref="exAdvice" pointcut-ref="aopPointcut"/>
+	</aop:config>
+	
+	<tx:advice id="exAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			属性意思，第一个方法的名称，第二事物的隔离级别，第三为事物的传播行为，第三个，事物的超时时间，第五个是否回滚，read-only是否只读 
+			<tx:method name="*" 	isolation="SERIALIZABLE" timeout="60" rollback-for="true"/>
+			<tx:method name="query*" isolation="DEFAULT" propagation="REQUIRED" read-only="true" timeout="60"/>
+		</tx:attributes>
+	</tx:advice> -->
+</beans>
